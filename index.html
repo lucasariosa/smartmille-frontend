@@ -61,7 +61,6 @@ body {
 .subbrand {
   font-size: 15px;
   color: #9ca3af;
-  letter-spacing: .3px;
 }
 
 /* ===== LAYOUT ===== */
@@ -80,7 +79,7 @@ body {
   }
 }
 
-/* ===== CARD PRINCIPAL ===== */
+/* ===== CARD ===== */
 .card {
   width: 420px;
   margin: auto;
@@ -183,11 +182,17 @@ button {
   justify-content: center;
 }
 
+/* ===== LETTERING ===== */
 .headline {
   font-size: 30px;
   font-weight: 800;
   line-height: 1.12;
   margin-bottom: 18px;
+
+  /* CONTORNO / ÊNFASE */
+  text-shadow:
+    0 2px 4px rgba(0,0,0,.65),
+    0 0 8px rgba(0,0,0,.45);
 }
 
 .headline.blue { color: #60a5fa; }
@@ -197,6 +202,18 @@ button {
 .text {
   font-size: 16px;
   line-height: 1.55;
+  color: #e5e7eb;
+}
+
+/* ===== DOWNLOAD ===== */
+.download {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.download button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
   color: #e5e7eb;
 }
 </style>
@@ -212,7 +229,7 @@ button {
 
 <div class="layout">
 
-  <!-- CARD PRINCIPAL -->
+  <!-- CARD -->
   <div>
     <div class="card">
       <input id="nome" placeholder="Seu nome">
@@ -235,6 +252,10 @@ button {
     </div>
 
     <div id="resultado" class="carousel"></div>
+
+    <div id="download" class="download" style="display:none">
+      <button onclick="baixar()">Baixar imagens</button>
+    </div>
   </div>
 
   <!-- DICAS -->
@@ -243,21 +264,25 @@ button {
     Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
     Conte qual dor ou curiosidade deseja despertar.<br><br>
     <strong>Exemplo:</strong><br>
-    “Você já conhece todos os seus direitos trabalhistas?”<br><br>
-    Isso nos ajuda a entregar um carrossel mais estratégico.
+    “Você já conhece todos os seus direitos trabalhistas?”
   </div>
 
 </div>
 
 <script>
+let imagens = [];
+
 async function gerar() {
   const btn = document.getElementById("btn");
   const status = document.getElementById("status");
   const erro = document.getElementById("erro");
   const resultado = document.getElementById("resultado");
+  const download = document.getElementById("download");
 
   erro.innerText = "";
   resultado.innerHTML = "";
+  download.style.display = "none";
+  imagens = [];
 
   btn.disabled = true;
   btn.innerText = "Gerando...";
@@ -293,6 +318,7 @@ async function gerar() {
     resultado.innerHTML = "";
 
     data.slides.forEach((s, idx) => {
+      imagens.push(s.imagem);
       const color = colors[idx % colors.length];
       const div = document.createElement("div");
       div.className = "slide";
@@ -306,6 +332,7 @@ async function gerar() {
       resultado.appendChild(div);
     });
 
+    download.style.display = "block";
     status.innerText = "Carrossel gerado com sucesso.";
 
   } catch {
@@ -315,6 +342,15 @@ async function gerar() {
     btn.innerText = "Gerar carrossel";
     status.innerText = "";
   }
+}
+
+function baixar() {
+  imagens.forEach((img, i) => {
+    const a = document.createElement("a");
+    a.href = "data:image/png;base64," + img;
+    a.download = `smartmille-slide-${i+1}.png`;
+    a.click();
+  });
 }
 </script>
 
