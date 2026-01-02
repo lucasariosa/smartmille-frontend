@@ -1,50 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>SmartMille - Gerador de Conteúdo</title>
+  <meta charset="UTF-8">
+  <title>SmartMille | Plataforma</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #e5e7eb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+      color: #93c5fd;
+    }
+
+    p {
+      color: #cbd5f5;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #93c5fd;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #1e3a8a;
+      background: #020617;
+      color: #e5e7eb;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    input::placeholder {
+      color: #64748b;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .resultado {
+      margin-top: 24px;
+      background: #020617;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      white-space: pre-wrap;
+      border: 1px solid #1e3a8a;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
 </head>
 <body>
 
-  <h1>SmartMille</h1>
-  <p>Gerador de conteúdo jurídico com IA</p>
+  <div class="container">
+    <h1>SmartMille</h1>
+    <p>Geração inteligente de conteúdo jurídico com IA</p>
 
-  <label>Área do Direito:</label><br>
-  <input type="text" id="area" placeholder="Ex: Direito Previdenciário"><br><br>
+    <label>Área do Direito</label>
+    <input id="area" placeholder="Ex: Direito Previdenciário">
 
-  <label>Formato:</label><br>
-  <input type="text" id="tipo" placeholder="Ex: Post Instagram"><br><br>
+    <label>Formato do Conteúdo</label>
+    <input id="tipo" placeholder="Ex: Post para Instagram">
 
-  <button onclick="gerarConteudo()">Gerar conteúdo</button>
+    <button onclick="gerarConteudo()">Gerar conteúdo</button>
 
-  <h3>Resultado:</h3>
-  <pre id="resultado"></pre>
+    <div id="resultado" class="resultado"></div>
+
+    <div class="footer">
+      SmartMille © Conteúdo jurídico com responsabilidade
+    </div>
+  </div>
 
   <script>
     async function gerarConteudo() {
       const area = document.getElementById("area").value;
       const tipo = document.getElementById("tipo").value;
+      const resultado = document.getElementById("resultado");
 
-      document.getElementById("resultado").innerText = "Gerando conteúdo...";
+      resultado.innerText = "Gerando conteúdo...";
 
       const resposta = await fetch(
         "https://smartmille-backend.onrender.com/gerar-conteudo",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            area: area,
-            tipo: tipo
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ area, tipo })
         }
       );
 
       const dados = await resposta.json();
-      document.getElementById("resultado").innerText = dados.resultado;
+      resultado.innerText = dados.resultado;
     }
   </script>
 
 </body>
 </html>
+
