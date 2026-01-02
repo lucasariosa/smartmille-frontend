@@ -21,7 +21,7 @@ body {
   padding: 56px 16px;
 }
 
-/* ===== BRANDING ===== */
+/* ===== BRANDING (inalterado) ===== */
 .branding {
   text-align: center;
   margin-bottom: 42px;
@@ -48,12 +48,7 @@ body {
 }
 
 .brand span {
-  background: linear-gradient(
-    to bottom,
-    #ffffff 0%,
-    #e5e7eb 45%,
-    #9ca3af 100%
-  );
+  background: linear-gradient(to bottom,#fff,#e5e7eb,#9ca3af);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -63,7 +58,7 @@ body {
   color: #9ca3af;
 }
 
-/* ===== LAYOUT ===== */
+/* ===== LAYOUT (inalterado) ===== */
 .layout {
   max-width: 1100px;
   margin: auto;
@@ -71,12 +66,6 @@ body {
   grid-template-columns: 1fr auto;
   gap: 40px;
   align-items: center;
-}
-
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ===== CARD ===== */
@@ -90,7 +79,6 @@ body {
   box-shadow: 0 30px 80px rgba(0,0,0,.65);
 }
 
-/* ===== FORM ===== */
 input, select, button {
   width: 100%;
   padding: 14px;
@@ -99,11 +87,6 @@ input, select, button {
   border: 1px solid rgba(255,255,255,.14);
   background: #020617;
   color: #e5e7eb;
-  font-size: 14px;
-}
-
-input::placeholder {
-  color: #94a3b8;
 }
 
 button {
@@ -115,38 +98,6 @@ button {
   border: none;
 }
 
-/* ===== STATUS ===== */
-.status {
-  text-align: center;
-  font-size: 13px;
-  margin-top: 10px;
-  color: #93c5fd;
-}
-
-.error {
-  text-align: center;
-  font-size: 13px;
-  margin-top: 6px;
-  color: #f87171;
-}
-
-/* ===== DICAS ===== */
-.tips {
-  max-width: 320px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 18px;
-  padding: 22px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #cbd5f5;
-  backdrop-filter: blur(10px);
-}
-
-.tips strong {
-  color: #f8fafc;
-}
-
 /* ===== RESULT ===== */
 .carousel {
   margin-top: 40px;
@@ -154,7 +105,6 @@ button {
   gap: 32px;
 }
 
-/* ===== SLIDES ===== */
 .slide {
   position: relative;
   aspect-ratio: 4/5;
@@ -172,24 +122,20 @@ button {
   position: absolute;
   inset: 0;
   padding: 34px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.12),
-    rgba(0,0,0,.9)
-  );
+  background: linear-gradient(to bottom,rgba(0,0,0,.12),rgba(0,0,0,.9));
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-/* ===== LETTERING ===== */
+/* ===== HEADLINE (AJUSTES AQUI) ===== */
 .headline {
-  font-size: 30px;
+  font-family: "Space Grotesk","Inter",system-ui;
+  font-size: 30px;              /* tamanho mantido */
   font-weight: 800;
   line-height: 1.12;
   margin-bottom: 18px;
-
-  /* CONTORNO / ÊNFASE */
+  text-align: center;           /* CENTRALIZADO */
   text-shadow:
     0 2px 4px rgba(0,0,0,.65),
     0 0 8px rgba(0,0,0,.45);
@@ -203,6 +149,7 @@ button {
   font-size: 16px;
   line-height: 1.55;
   color: #e5e7eb;
+  text-align: center;
 }
 
 /* ===== DOWNLOAD ===== */
@@ -228,27 +175,19 @@ button {
 </div>
 
 <div class="layout">
-
-  <!-- CARD -->
   <div>
     <div class="card">
       <input id="nome" placeholder="Seu nome">
       <input id="contato" placeholder="WhatsApp">
       <input id="area" placeholder="Área de atuação">
       <input id="publico" placeholder="Público-alvo">
-
       <select id="tipo">
-        <option value="introducao">Introdução sobre o assunto</option>
-        <option value="definicao">Definição sobre o assunto</option>
-        <option value="conclusao">Conclusão sobre o assunto</option>
+        <option value="introducao">Introdução</option>
+        <option value="definicao">Definição</option>
+        <option value="conclusao">Conclusão</option>
       </select>
-
       <input id="tema" placeholder="Tema do carrossel">
-
       <button id="btn" onclick="gerar()">Gerar carrossel</button>
-
-      <div id="status" class="status"></div>
-      <div id="erro" class="error"></div>
     </div>
 
     <div id="resultado" class="carousel"></div>
@@ -257,36 +196,15 @@ button {
       <button onclick="baixar()">Baixar imagens</button>
     </div>
   </div>
-
-  <!-- DICAS -->
-  <div class="tips">
-    <strong>Dica para melhores resultados</strong><br><br>
-    Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
-    Conte qual dor ou curiosidade deseja despertar.<br><br>
-    <strong>Exemplo:</strong><br>
-    “Você já sabe quais são os primeiros passos para dar entrada em sua aposentadoria?”
-  </div>
-
 </div>
 
 <script>
-let imagens = [];
+let slidesData = [];
 
 async function gerar() {
-  const btn = document.getElementById("btn");
-  const status = document.getElementById("status");
-  const erro = document.getElementById("erro");
-  const resultado = document.getElementById("resultado");
-  const download = document.getElementById("download");
-
-  erro.innerText = "";
+  slidesData = [];
   resultado.innerHTML = "";
   download.style.display = "none";
-  imagens = [];
-
-  btn.disabled = true;
-  btn.innerText = "Gerando...";
-  status.innerText = "Gerando carrossel, te entregaremos em até 1 minuto. Não feche ou atualize a janela.";
 
   const payload = {
     nome: nome.value,
@@ -297,59 +215,73 @@ async function gerar() {
     tema: tema.value
   };
 
-  try {
-    const res = await fetch(
-      "https://smartmille-backend.onrender.com/gerar-carrossel",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }
-    );
-
-    const data = await res.json();
-
-    if (data.erro) {
-      erro.innerText = data.erro;
-      return;
+  const res = await fetch(
+    "https://smartmille-backend.onrender.com/gerar-carrossel",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     }
+  );
 
-    const colors = ["blue", "yellow", "white"];
-    resultado.innerHTML = "";
+  const data = await res.json();
 
-    data.slides.forEach((s, idx) => {
-      imagens.push(s.imagem);
-      const color = colors[idx % colors.length];
-      const div = document.createElement("div");
-      div.className = "slide";
-      div.innerHTML = `
-        <img src="data:image/png;base64,${s.imagem}">
-        <div class="overlay">
-          <div class="headline ${color}">${s.headline}</div>
-          <div class="text">${s.texto}</div>
-        </div>
-      `;
-      resultado.appendChild(div);
-    });
+  const colors = ["blue","yellow","white"];
 
-    download.style.display = "block";
-    status.innerText = "Carrossel gerado com sucesso.";
+  data.slides.forEach((s,i)=>{
+    slidesData.push({...s, color: colors[i % colors.length]});
 
-  } catch {
-    erro.innerText = "Erro ao gerar carrossel.";
-  } finally {
-    btn.disabled = false;
-    btn.innerText = "Gerar carrossel";
-    status.innerText = "";
-  }
+    const div = document.createElement("div");
+    div.className = "slide";
+    div.innerHTML = `
+      <img src="data:image/png;base64,${s.imagem}">
+      <div class="overlay">
+        <div class="headline ${colors[i % colors.length]}">${s.headline}</div>
+        <div class="text">${s.texto}</div>
+      </div>
+    `;
+    resultado.appendChild(div);
+  });
+
+  download.style.display = "block";
 }
 
+/* ===== DOWNLOAD COM CANVAS (VERSÃO FINAL) ===== */
 function baixar() {
-  imagens.forEach((img, i) => {
-    const a = document.createElement("a");
-    a.href = "data:image/png;base64," + img;
-    a.download = `smartmille-slide-${i+1}.png`;
-    a.click();
+  slidesData.forEach((s, i) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024;
+    canvas.height = 1280;
+    const ctx = canvas.getContext("2d");
+
+    const img = new Image();
+    img.src = "data:image/png;base64," + s.imagem;
+
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      /* overlay */
+      ctx.fillStyle = "rgba(0,0,0,.55)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      /* headline */
+      ctx.font = "800 64px Space Grotesk, Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillStyle =
+        s.color === "blue" ? "#60a5fa" :
+        s.color === "yellow" ? "#facc15" : "#ffffff";
+      ctx.fillText(s.headline, canvas.width/2, canvas.height/2 - 40, 900);
+
+      /* texto */
+      ctx.font = "400 36px Inter, sans-serif";
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fillText(s.texto, canvas.width/2, canvas.height/2 + 40, 900);
+
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = `smartmille-slide-${i+1}.png`;
+      a.click();
+    };
   });
 }
 </script>
