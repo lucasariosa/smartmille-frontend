@@ -6,38 +6,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+    /* Fundo animado */
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #020617);
+      background: radial-gradient(circle at bottom, #020617, #020617);
       color: #e5e7eb;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.25), transparent),
+        radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.2), transparent),
+        radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.15), transparent);
+      animation: estrelas 120s linear infinite;
+      pointer-events: none;
+    }
+
+    body::after {
+      animation-duration: 180s;
+      opacity: 0.6;
+    }
+
+    @keyframes estrelas {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-25%, -25%); }
     }
 
     .container {
+      position: relative;
       width: 100%;
       max-width: 640px;
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(59, 130, 246, 0.25);
-      border-radius: 18px;
-      padding: 36px;
-      box-shadow: 0 0 50px rgba(59, 130, 246, 0.18);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 60px rgba(59, 130, 246, 0.18);
+      z-index: 1;
     }
 
     h1 {
-      margin-top: 0;
-      font-size: 30px;
+      margin: 0;
+      font-size: 32px;
       color: #93c5fd;
+      text-align: center;
+      letter-spacing: 0.5px;
     }
 
     .subtitle {
-      color: #cbd5f5;
-      margin-bottom: 28px;
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 34px;
       font-size: 15px;
-      line-height: 1.4;
+      color: #cbd5f5;
+      line-height: 1.5;
     }
 
     label {
@@ -49,53 +81,63 @@
 
     input {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 13px;
+      border-radius: 10px;
       border: 1px solid #1e3a8a;
       background: #020617;
       color: #e5e7eb;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       font-size: 14px;
+    }
+
+    input::placeholder {
+      color: #64748b;
     }
 
     button {
       width: 100%;
-      padding: 15px;
-      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      padding: 16px;
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       color: white;
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
       margin-top: 14px;
+      transition: all 0.25s ease;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
     }
 
     button:hover {
-      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 36px rgba(59, 130, 246, 0.45);
+      opacity: 0.95;
     }
 
     .status {
-      margin-top: 18px;
+      margin-top: 20px;
       font-size: 14px;
       color: #cbd5f5;
+      text-align: center;
     }
 
     .slides {
-      margin-top: 26px;
+      margin-top: 28px;
       display: grid;
       gap: 22px;
     }
 
     .slides img {
       width: 100%;
-      border-radius: 14px;
+      border-radius: 16px;
       border: 1px solid #1e3a8a;
+      background: #020617;
     }
 
     .download a {
       display: block;
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 14px;
       color: #93c5fd;
       text-decoration: underline;
@@ -103,7 +145,7 @@
     }
 
     .footer {
-      margin-top: 28px;
+      margin-top: 30px;
       text-align: center;
       font-size: 12px;
       color: #64748b;
@@ -115,24 +157,24 @@
 <div class="container">
   <h1>SmartMille</h1>
   <div class="subtitle">
-    Gere <strong>carrosséis jurídicos prontos para publicar</strong> em poucos segundos.
-    Nenhum texto solto. Nenhuma legenda crua.
+    Carrosséis jurídicos prontos para publicar em poucos segundos.
+    Conteúdo visual profissional, gerado por Inteligência Artificial.
   </div>
 
   <label>Área do Direito</label>
-  <input id="area" placeholder="Ex: Direito Previdenciário">
+  <input id="area" placeholder="Ex: Direito Trabalhista">
 
   <label>Cidade / Estado</label>
-  <input id="cidade" placeholder="Ex: São Paulo - SP">
+  <input id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
 
   <label>Público-alvo</label>
-  <input id="publico" placeholder="Ex: aposentados e trabalhadores CLT">
+  <input id="publico" placeholder="Ex: trabalhadores demitidos sem justa causa">
 
   <label>Estilo de comunicação</label>
-  <input id="estilo" placeholder="Ex: didático, direto e profissional">
+  <input id="estilo" placeholder="Ex: didático e direto">
 
   <label>Nome do advogado (opcional)</label>
-  <input id="nome" placeholder="Ex: Dr. João Silva">
+  <input id="nome" placeholder="Ex: Dr. Lucas">
 
   <label>Nome do escritório (opcional)</label>
   <input id="escritorio" placeholder="Ex: Silva & Associados">
@@ -150,40 +192,57 @@
 
 <script>
 async function gerarCarrossel() {
+  const area = document.getElementById("area").value;
+  const cidade = document.getElementById("cidade").value;
+  const publico = document.getElementById("publico").value;
+  const estilo = document.getElementById("estilo").value;
+  const nome = document.getElementById("nome").value;
+  const escritorio = document.getElementById("escritorio").value;
+
+  const status = document.getElementById("status");
+  const slides = document.getElementById("slides");
+  const download = document.getElementById("download");
+
   status.innerText = "Gerando carrossel pronto para publicar...";
   slides.innerHTML = "";
   download.innerHTML = "";
 
-  const resposta = await fetch(
-    "https://smartmille-backend.onrender.com/gerar-carrossel",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        area: area.value,
-        cidade: cidade.value,
-        publico: publico.value,
-        estilo: estilo.value,
-        nome: nome.value,
-        escritorio: escritorio.value
-      })
-    }
-  );
+  try {
+    const resposta = await fetch(
+      "https://smartmille-backend.onrender.com/gerar-carrossel",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          area,
+          cidade,
+          publico,
+          estilo,
+          nome,
+          escritorio
+        })
+      }
+    );
 
-  const dados = await resposta.json();
-  status.innerText = "Seu carrossel está pronto!";
+    const dados = await resposta.json();
+    status.innerText = "Seu carrossel está pronto!";
 
-  dados.slides.forEach((url, i) => {
-    const img = document.createElement("img");
-    img.src = url;
-    slides.appendChild(img);
+    dados.slides.forEach((url, i) => {
+      const img = document.createElement("img");
+      img.src = url;
+      slides.appendChild(img);
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `smartmille-slide-${i + 1}.png`;
-    link.innerText = `Baixar slide ${i + 1}`;
-    download.appendChild(link);
-  });
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `smartmille-slide-${i + 1}.png`;
+      link.innerText = `Baixar slide ${i + 1}`;
+      download.appendChild(link);
+    });
+
+  } catch (erro) {
+    status.innerText = "Erro ao gerar carrossel. Tente novamente.";
+    console.error(erro);
+  }
 }
 </script>
 
