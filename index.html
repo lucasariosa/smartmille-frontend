@@ -242,7 +242,13 @@ async function gerarCarrossel() {
       }
     );
 
+    if (!resposta.ok) {
+      const textoErro = await resposta.text();
+      throw new Error(textoErro);
+    }
+
     const dados = await resposta.json();
+
     status.innerText = "Seu carrossel está pronto!";
 
     dados.slides.forEach((url, i) => {
@@ -258,8 +264,8 @@ async function gerarCarrossel() {
     });
 
   } catch (erro) {
-    status.innerText = "Erro ao gerar carrossel. Tente novamente.";
-    console.error(erro);
+    status.innerText = "Erro: " + erro.message;
+    console.error("ERRO BACKEND:", erro);
   }
 }
 </script>
