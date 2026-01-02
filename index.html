@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>SmartMille - Gerador de Conteúdo</title>
+</head>
+<body>
+
+  <h1>SmartMille</h1>
+  <p>Gerador de conteúdo jurídico com IA</p>
+
+  <label>Área do Direito:</label><br>
+  <input type="text" id="area" placeholder="Ex: Direito Previdenciário"><br><br>
+
+  <label>Formato:</label><br>
+  <input type="text" id="tipo" placeholder="Ex: Post Instagram"><br><br>
+
+  <button onclick="gerarConteudo()">Gerar conteúdo</button>
+
+  <h3>Resultado:</h3>
+  <pre id="resultado"></pre>
+
+  <script>
+    async function gerarConteudo() {
+      const area = document.getElementById("area").value;
+      const tipo = document.getElementById("tipo").value;
+
+      document.getElementById("resultado").innerText = "Gerando conteúdo...";
+
+      const resposta = await fetch(
+        "https://smartmille-backend.onrender.com/gerar-conteudo",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            area: area,
+            tipo: tipo
+          })
+        }
+      );
+
+      const dados = await resposta.json();
+      document.getElementById("resultado").innerText = dados.resultado;
+    }
+  </script>
+
+</body>
+</html>
