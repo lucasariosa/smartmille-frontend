@@ -7,16 +7,21 @@
 
 <style>
 body {
-  background:#0f172a;
-  font-family: system-ui, sans-serif;
+  background:#f4f6f8;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   margin:0;
-  padding:40px;
-  color:#fff;
+  padding:40px 16px;
+  color:#111827;
 }
 
 .container {
-  max-width: 480px;
+  max-width: 520px;
   margin:auto;
+}
+
+h1 {
+  text-align:center;
+  margin-bottom:24px;
 }
 
 input, select, button {
@@ -24,18 +29,38 @@ input, select, button {
   padding:14px;
   margin-bottom:12px;
   border-radius:8px;
-  border:none;
+  border:1px solid #d1d5db;
+  font-size:15px;
+  box-sizing:border-box;
 }
 
 button {
-  background:#22c55e;
-  color:#000;
+  background:#111827;
+  color:white;
   font-weight:600;
   cursor:pointer;
 }
 
+button:disabled {
+  opacity:0.6;
+  cursor:not-allowed;
+}
+
+.status {
+  text-align:center;
+  margin:12px 0;
+  font-size:14px;
+  color:#374151;
+}
+
+.error {
+  color:#b91c1c;
+  text-align:center;
+  margin-top:10px;
+}
+
 .carousel {
-  margin-top:30px;
+  margin-top:32px;
   display:grid;
   gap:24px;
 }
@@ -45,7 +70,7 @@ button {
   width:100%;
   aspect-ratio:4/5;
   overflow:hidden;
-  border-radius:16px;
+  border-radius:14px;
   background:#000;
 }
 
@@ -60,7 +85,7 @@ button {
   inset:0;
   background:linear-gradient(
     to bottom,
-    rgba(0,0,0,.75),
+    rgba(0,0,0,.65),
     rgba(0,0,0,.85)
   );
   padding:24px;
@@ -70,41 +95,56 @@ button {
 }
 
 .headline {
-  font-size:22px;
+  font-size:20px;
   font-weight:700;
   margin-bottom:10px;
+  color:#fff;
 }
 
 .text {
   font-size:15px;
-  line-height:1.4;
+  line-height:1.45;
+  color:#e5e7eb;
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
+  <h1>SmartMille</h1>
 
-<input id="nome" placeholder="Nome do advogado(a)">
-<input id="contato" placeholder="WhatsApp">
-<input id="area" placeholder="Área de atuação">
-<input id="publico" placeholder="Público-alvo">
+  <input id="nome" placeholder="Nome do advogado(a)">
+  <input id="contato" placeholder="WhatsApp">
+  <input id="area" placeholder="Área de atuação">
+  <input id="publico" placeholder="Público-alvo">
 
-<select id="tipo">
-  <option value="introducao">Introdução</option>
-  <option value="definicao">Definição</option>
-  <option value="conclusao">Conclusão</option>
-</select>
+  <select id="tipo">
+    <option value="introducao">Introdução sobre o assunto</option>
+    <option value="definicao">Definição sobre o assunto</option>
+    <option value="conclusao">Conclusão sobre o assunto</option>
+  </select>
 
-<input id="tema" placeholder="Tema do carrossel">
+  <input id="tema" placeholder="Tema do carrossel">
 
-<button onclick="gerar()">Gerar carrossel</button>
+  <button id="btn" onclick="gerar()">Gerar carrossel</button>
 
-<div id="resultado" class="carousel"></div>
+  <div id="status" class="status"></div>
+  <div id="erro" class="error"></div>
+
+  <div id="resultado" class="carousel"></div>
 </div>
 
 <script>
 async function gerar() {
+  const btn = document.getElementById("btn");
+  const status = document.getElementById("status");
+  const erro = document.getElementById("erro");
+  const resultado = document.getElementById("resultado");
+
+  erro.innerText = "";
+  resultado.innerHTML = "";
+
   const payload = {
     nome: nome.value,
     contato: contato.value,
@@ -114,30 +154,49 @@ async function gerar() {
     tema: tema.value
   };
 
-  const res = await fetch(
-    "https://smartmille-backend.onrender.com/gerar-carrossel",
-    {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify(payload)
+  btn.disabled = true;
+  btn.innerText = "Gerando...";
+  status.innerText = "Gerando carrossel, isso pode levar até 1 minuto…";
+
+  try {
+    const res = await fetch(
+      "https://smartmille-backend.onrender.com/gerar-carrossel",
+      {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.erro) {
+      erro.innerText = data.erro;
+      return;
     }
-  );
 
-  const data = await res.json();
-  resultado.innerHTML = "";
+    status.innerText = "Carrossel gerado com sucesso.";
 
-  data.slides.forEach(s => {
-    const div = document.createElement("div");
-    div.className = "slide";
-    div.innerHTML = `
-      <img src="data:image/png;base64,${s.imagem}">
-      <div class="overlay">
-        <div class="headline">${s.headline}</div>
-        <div class="text">${s.texto}</div>
-      </div>
-    `;
-    resultado.appendChild(div);
-  });
+    data.slides.forEach(s => {
+      const div = document.createElement("div");
+      div.className = "slide";
+      div.innerHTML = `
+        <img src="data:image/png;base64,${s.imagem}">
+        <div class="overlay">
+          <div class="headline">${s.headline}</div>
+          <div class="text">${s.texto}</div>
+        </div>
+      `;
+      resultado.appendChild(div);
+    });
+
+  } catch (e) {
+    erro.innerText = "Erro ao gerar carrossel.";
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Gerar carrossel";
+    status.innerText = "";
+  }
 }
 </script>
 
