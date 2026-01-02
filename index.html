@@ -21,7 +21,7 @@ body {
   padding: 56px 16px;
 }
 
-/* ===== BRANDING (inalterado) ===== */
+/* ===== BRANDING ===== */
 .branding {
   text-align: center;
   margin-bottom: 42px;
@@ -48,7 +48,7 @@ body {
 }
 
 .brand span {
-  background: linear-gradient(to bottom,#fff,#e5e7eb,#9ca3af);
+  background: linear-gradient(to bottom,#ffffff,#e5e7eb,#9ca3af);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -58,7 +58,7 @@ body {
   color: #9ca3af;
 }
 
-/* ===== LAYOUT (inalterado) ===== */
+/* ===== LAYOUT ===== */
 .layout {
   max-width: 1100px;
   margin: auto;
@@ -66,6 +66,12 @@ body {
   grid-template-columns: 1fr auto;
   gap: 40px;
   align-items: center;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ===== CARD ===== */
@@ -98,6 +104,23 @@ button {
   border: none;
 }
 
+/* ===== DICAS (RESTAURADAS) ===== */
+.tips {
+  max-width: 320px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 22px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #cbd5f5;
+  backdrop-filter: blur(10px);
+}
+
+.tips strong {
+  color: #f8fafc;
+}
+
 /* ===== RESULT ===== */
 .carousel {
   margin-top: 40px;
@@ -128,14 +151,14 @@ button {
   justify-content: center;
 }
 
-/* ===== HEADLINE (AJUSTES AQUI) ===== */
+/* ===== HEADLINE ===== */
 .headline {
   font-family: "Space Grotesk","Inter",system-ui;
-  font-size: 30px;              /* tamanho mantido */
+  font-size: 30px;
   font-weight: 800;
   line-height: 1.12;
   margin-bottom: 18px;
-  text-align: center;           /* CENTRALIZADO */
+  text-align: center;
   text-shadow:
     0 2px 4px rgba(0,0,0,.65),
     0 0 8px rgba(0,0,0,.45);
@@ -175,6 +198,8 @@ button {
 </div>
 
 <div class="layout">
+
+  <!-- BLOCO PRINCIPAL -->
   <div>
     <div class="card">
       <input id="nome" placeholder="Seu nome">
@@ -196,6 +221,16 @@ button {
       <button onclick="baixar()">Baixar imagens</button>
     </div>
   </div>
+
+  <!-- DICA LATERAL -->
+  <div class="tips">
+    <strong>Dica para melhores resultados</strong><br><br>
+    Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
+    Conte qual dor ou curiosidade deseja despertar.<br><br>
+    <strong>Exemplo:</strong><br>
+    “Você já sabe quais são os primeiros passos para dar entrada em sua aposentadoria?”
+  </div>
+
 </div>
 
 <script>
@@ -225,7 +260,6 @@ async function gerar() {
   );
 
   const data = await res.json();
-
   const colors = ["blue","yellow","white"];
 
   data.slides.forEach((s,i)=>{
@@ -246,7 +280,6 @@ async function gerar() {
   download.style.display = "block";
 }
 
-/* ===== DOWNLOAD COM CANVAS (VERSÃO FINAL) ===== */
 function baixar() {
   slidesData.forEach((s, i) => {
     const canvas = document.createElement("canvas");
@@ -259,12 +292,9 @@ function baixar() {
 
     img.onload = () => {
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-      /* overlay */
       ctx.fillStyle = "rgba(0,0,0,.55)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      /* headline */
       ctx.font = "800 64px Space Grotesk, Inter, sans-serif";
       ctx.textAlign = "center";
       ctx.fillStyle =
@@ -272,7 +302,6 @@ function baixar() {
         s.color === "yellow" ? "#facc15" : "#ffffff";
       ctx.fillText(s.headline, canvas.width/2, canvas.height/2 - 40, 900);
 
-      /* texto */
       ctx.font = "400 36px Inter, sans-serif";
       ctx.fillStyle = "#e5e7eb";
       ctx.fillText(s.texto, canvas.width/2, canvas.height/2 + 40, 900);
