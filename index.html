@@ -15,7 +15,6 @@
       overflow-y: auto;
     }
 
-    /* FUNDO ANIMADO FIXO */
     .background {
       position: fixed;
       inset: 0;
@@ -34,11 +33,11 @@
         radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.25), transparent),
         radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.2), transparent),
         radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.15), transparent);
-      animation: estrelas 140s linear infinite;
+      animation: estrelas 160s linear infinite;
     }
 
     .background::after {
-      animation-duration: 220s;
+      animation-duration: 240s;
       opacity: 0.6;
     }
 
@@ -72,13 +71,11 @@
       font-size: 32px;
       color: #93c5fd;
       text-align: center;
-      letter-spacing: 0.5px;
     }
 
     .subtitle {
       text-align: center;
-      margin-top: 12px;
-      margin-bottom: 34px;
+      margin: 12px 0 34px;
       font-size: 15px;
       color: #cbd5f5;
       line-height: 1.5;
@@ -102,10 +99,6 @@
       font-size: 14px;
     }
 
-    input::placeholder {
-      color: #64748b;
-    }
-
     button {
       width: 100%;
       padding: 16px;
@@ -116,37 +109,34 @@
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 14px;
-      transition: all 0.25s ease;
+      margin-top: 10px;
       box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+      transition: 0.25s ease;
     }
 
     button:hover {
       transform: translateY(-1px);
       box-shadow: 0 14px 36px rgba(59, 130, 246, 0.45);
-      opacity: 0.95;
     }
 
     .status {
-      margin-top: 20px;
+      margin-top: 18px;
+      text-align: center;
       font-size: 14px;
       color: #cbd5f5;
-      text-align: center;
     }
 
     .slides {
       margin-top: 28px;
       display: grid;
-      gap: 16px;
+      gap: 22px;
     }
 
-    .slide-box {
-      padding: 16px;
+    .slides img {
+      width: 100%;
+      border-radius: 16px;
       border: 1px solid #1e3a8a;
-      border-radius: 12px;
       background: #020617;
-      font-size: 14px;
-      line-height: 1.5;
     }
 
     .footer {
@@ -176,10 +166,10 @@
     <input id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
 
     <label>Público-alvo</label>
-    <input id="publico" placeholder="Ex: Trabalhadores demitidos sem justa causa">
+    <input id="publico" placeholder="Ex: trabalhadores demitidos sem justa causa">
 
     <label>Estilo de comunicação</label>
-    <input id="estilo" placeholder="Ex: Didático e direto">
+    <input id="estilo" placeholder="Ex: didático e direto">
 
     <label>Nome do advogado (opcional)</label>
     <input id="nome" placeholder="Ex: Dr(a). Seu Nome">
@@ -200,17 +190,10 @@
 
 <script>
 async function gerarCarrossel() {
-  const area = document.getElementById("area").value;
-  const cidade = document.getElementById("cidade").value;
-  const publico = document.getElementById("publico").value;
-  const estilo = document.getElementById("estilo").value;
-  const nome = document.getElementById("nome").value;
-  const escritorio = document.getElementById("escritorio").value;
-
   const status = document.getElementById("status");
   const slides = document.getElementById("slides");
 
-  status.innerText = "Gerando carrossel pronto para publicar...";
+  status.innerText = "Gerando carrossel visual...";
   slides.innerHTML = "";
 
   try {
@@ -220,35 +203,29 @@ async function gerarCarrossel() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          area,
-          cidade,
-          publico,
-          estilo,
-          nome,
-          escritorio
+          area: area.value,
+          cidade: cidade.value,
+          publico: publico.value,
+          estilo: estilo.value,
+          nome: nome.value,
+          escritorio: escritorio.value
         })
       }
     );
 
-    if (!resposta.ok) {
-      const erroTexto = await resposta.text();
-      throw new Error(erroTexto);
-    }
-
     const dados = await resposta.json();
 
-    status.innerText = "Carrossel gerado com sucesso!";
+    status.innerText = "Carrossel pronto para publicar!";
 
-    dados.slides_texto.forEach((texto, i) => {
-      const box = document.createElement("div");
-      box.className = "slide-box";
-      box.innerText = `Slide ${i + 1}: ${texto}`;
-      slides.appendChild(box);
+    dados.imagens.forEach((url) => {
+      const img = document.createElement("img");
+      img.src = url;
+      slides.appendChild(img);
     });
 
-  } catch (erro) {
+  } catch (e) {
     status.innerText = "Erro ao gerar carrossel.";
-    console.error("ERRO:", erro);
+    console.error(e);
   }
 }
 </script>
