@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>SmartMille | Carrosséis Jurídicos Prontos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
     body {
@@ -36,119 +36,61 @@
       animation: estrelas 160s linear infinite;
     }
 
-    .background::after {
-      animation-duration: 240s;
-      opacity: 0.6;
-    }
+    .background::after { animation-duration: 240s; opacity: .6; }
 
     @keyframes estrelas {
-      from { transform: translate(0, 0); }
-      to { transform: translate(-25%, -25%); }
+      from { transform: translate(0,0); }
+      to { transform: translate(-25%,-25%); }
     }
 
     .wrapper {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       padding: 40px 16px;
     }
 
     .container {
-      width: 100%;
-      max-width: 640px;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(59, 130, 246, 0.25);
+      width: 100%; max-width: 640px;
+      background: rgba(15,23,42,.92);
+      border: 1px solid rgba(59,130,246,.25);
       border-radius: 20px;
       padding: 40px;
-      box-shadow: 0 0 60px rgba(59, 130, 246, 0.18);
+      box-shadow: 0 0 60px rgba(59,130,246,.18);
     }
 
-    h1 {
-      margin: 0;
-      font-size: 32px;
-      color: #93c5fd;
-      text-align: center;
-    }
-
+    h1 { margin: 0; font-size: 32px; color: #93c5fd; text-align: center; }
     .subtitle {
-      text-align: center;
-      margin: 12px 0 34px;
-      font-size: 15px;
-      color: #cbd5f5;
-      line-height: 1.5;
+      text-align: center; margin: 12px 0 34px;
+      font-size: 15px; color: #cbd5f5; line-height: 1.5;
     }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-      color: #93c5fd;
-    }
-
+    label { display:block; margin-bottom:6px; font-size:13px; color:#93c5fd; }
     input {
-      width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: 1px solid #1e3a8a;
-      background: #020617;
-      color: #e5e7eb;
-      margin-bottom: 18px;
-      font-size: 14px;
+      width:100%; padding:13px; border-radius:10px;
+      border:1px solid #1e3a8a; background:#020617; color:#e5e7eb;
+      margin-bottom:18px; font-size:14px;
     }
 
     button {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #2563eb, #3b82f6);
-      border: none;
-      border-radius: 14px;
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 10px;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
-      transition: 0.25s ease;
+      width:100%; padding:16px;
+      background:linear-gradient(135deg,#2563eb,#3b82f6);
+      border:none; border-radius:14px; color:white;
+      font-size:16px; font-weight:600; cursor:pointer;
+      box-shadow:0 10px 30px rgba(37,99,235,.35);
+      transition:.25s ease;
     }
+    button:hover { transform:translateY(-1px); box-shadow:0 14px 36px rgba(59,130,246,.45); }
 
-    button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 36px rgba(59, 130, 246, 0.45);
-    }
+    .status { margin-top:18px; text-align:center; font-size:14px; color:#cbd5f5; }
+    .slides { margin-top:28px; display:grid; gap:22px; }
+    .slides img { width:100%; border-radius:16px; border:1px solid #1e3a8a; background:#020617; }
 
-    .status {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 14px;
-      color: #cbd5f5;
-    }
-
-    .slides {
-      margin-top: 28px;
-      display: grid;
-      gap: 22px;
-    }
-
-    .slides img {
-      width: 100%;
-      border-radius: 16px;
-      border: 1px solid #1e3a8a;
-      background: #020617;
-    }
-
-    .footer {
-      margin-top: 30px;
-      text-align: center;
-      font-size: 12px;
-      color: #64748b;
-    }
+    .footer { margin-top:30px; text-align:center; font-size:12px; color:#64748b; }
   </style>
 </head>
-<body>
 
+<body>
 <div class="background"></div>
 
 <div class="wrapper">
@@ -160,31 +102,29 @@
     </div>
 
     <label>Área do Direito</label>
-    <input id="area" placeholder="Ex: Direito Trabalhista">
+    <input id="area" placeholder="Ex: Direito Trabalhista" />
 
     <label>Cidade / Estado</label>
-    <input id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
+    <input id="cidade" placeholder="Ex: Rio de Janeiro - RJ" />
 
     <label>Público-alvo</label>
-    <input id="publico" placeholder="Ex: trabalhadores demitidos sem justa causa">
+    <input id="publico" placeholder="Ex: trabalhadores demitidos sem justa causa" />
 
     <label>Estilo de comunicação</label>
-    <input id="estilo" placeholder="Ex: didático e direto">
+    <input id="estilo" placeholder="Ex: didático e direto" />
 
     <label>Nome do advogado (opcional)</label>
-    <input id="nome" placeholder="Ex: Dr(a). Seu Nome">
+    <input id="nome" placeholder="Ex: Dr(a). Seu Nome" />
 
     <label>Nome do escritório (opcional)</label>
-    <input id="escritorio" placeholder="Ex: Seu Escritório de Advocacia">
+    <input id="escritorio" placeholder="Ex: Seu Escritório de Advocacia" />
 
     <button onclick="gerarCarrossel()">Gerar carrossel pronto</button>
 
     <div id="status" class="status"></div>
     <div id="slides" class="slides"></div>
 
-    <div class="footer">
-      SmartMille © Conteúdo jurídico com responsabilidade
-    </div>
+    <div class="footer">SmartMille © Conteúdo jurídico com responsabilidade</div>
   </div>
 </div>
 
@@ -192,32 +132,37 @@
 async function gerarCarrossel() {
   const status = document.getElementById("status");
   const slides = document.getElementById("slides");
-
-  status.innerText = "Gerando carrossel visual...";
   slides.innerHTML = "";
+  status.innerText = "Gerando carrossel visual...";
 
   try {
-    const resposta = await fetch(
-      "https://smartmille-backend.onrender.com/gerar-carrossel",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          area: area.value,
-          cidade: cidade.value,
-          publico: publico.value,
-          estilo: estilo.value,
-          nome: nome.value,
-          escritorio: escritorio.value
-        })
-      }
-    );
+    // 1) GERAR TEXTOS
+    const r1 = await fetch("https://smartmille-backend.onrender.com/gerar-textos", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        area: area.value,
+        cidade: cidade.value,
+        publico: publico.value,
+        estilo: estilo.value,
+        nome: nome.value,
+        escritorio: escritorio.value
+      })
+    });
 
-    const dados = await resposta.json();
+    const d1 = await r1.json();
+
+    // 2) GERAR IMAGENS
+    const r2 = await fetch("https://smartmille-backend.onrender.com/gerar-imagens", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ textos: d1.textos })
+    });
+
+    const d2 = await r2.json();
 
     status.innerText = "Carrossel pronto para publicar!";
-
-    dados.imagens.forEach((url) => {
+    d2.imagens.forEach(url => {
       const img = document.createElement("img");
       img.src = url;
       slides.appendChild(img);
@@ -229,6 +174,5 @@ async function gerarCarrossel() {
   }
 }
 </script>
-
 </body>
 </html>
