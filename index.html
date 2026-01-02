@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>SmartMille | Plataforma</title>
+  <title>SmartMille | Carrosséis Jurídicos Prontos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -19,23 +19,25 @@
 
     .container {
       width: 100%;
-      max-width: 620px;
+      max-width: 640px;
       background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(59, 130, 246, 0.2);
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: 18px;
+      padding: 36px;
+      box-shadow: 0 0 50px rgba(59, 130, 246, 0.18);
     }
 
     h1 {
       margin-top: 0;
-      font-size: 28px;
+      font-size: 30px;
       color: #93c5fd;
     }
 
-    p {
+    .subtitle {
       color: #cbd5f5;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
+      font-size: 15px;
+      line-height: 1.4;
     }
 
     label {
@@ -58,45 +60,50 @@
 
     button {
       width: 100%;
-      padding: 14px;
+      padding: 15px;
       background: linear-gradient(90deg, #2563eb, #3b82f6);
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       color: white;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 14px;
+    }
+
+    button:hover {
+      opacity: 0.92;
+    }
+
+    .status {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #cbd5f5;
     }
 
     .slides {
-      margin-top: 28px;
+      margin-top: 26px;
       display: grid;
-      grid-template-columns: repeat(1, 1fr);
-      gap: 20px;
+      gap: 22px;
     }
 
     .slides img {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid #1e3a8a;
     }
 
-    .download {
-      margin-top: 20px;
+    .download a {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #93c5fd;
+      text-decoration: underline;
       text-align: center;
     }
 
-    .download a {
-      color: #93c5fd;
-      text-decoration: underline;
-      font-size: 14px;
-      display: block;
-      margin-top: 8px;
-    }
-
     .footer {
-      margin-top: 24px;
+      margin-top: 28px;
       text-align: center;
       font-size: 12px;
       color: #64748b;
@@ -105,78 +112,80 @@
 </head>
 <body>
 
-  <div class="container">
-    <h1>SmartMille</h1>
-    <p>Carrossel jurídico pronto, gerado por IA</p>
-
-    <label>Área do Direito</label>
-    <input id="area">
-
-    <label>Cidade / Estado</label>
-    <input id="cidade">
-
-    <label>Público-alvo</label>
-    <input id="publico">
-
-    <label>Estilo de comunicação</label>
-    <input id="estilo">
-
-    <label>Nome do advogado (opcional)</label>
-    <input id="nome">
-
-    <label>Nome do escritório (opcional)</label>
-    <input id="escritorio">
-
-    <button onclick="gerarCarrossel()">Gerar carrossel</button>
-
-    <div id="slides" class="slides"></div>
-
-    <div id="download" class="download"></div>
-
-    <div class="footer">
-      SmartMille © Conteúdo jurídico com responsabilidade
-    </div>
+<div class="container">
+  <h1>SmartMille</h1>
+  <div class="subtitle">
+    Gere <strong>carrosséis jurídicos prontos para publicar</strong> em poucos segundos.
+    Nenhum texto solto. Nenhuma legenda crua.
   </div>
 
-  <script>
-    async function gerarCarrossel() {
-      document.getElementById("slides").innerHTML = "Gerando imagens...";
-      document.getElementById("download").innerHTML = "";
+  <label>Área do Direito</label>
+  <input id="area" placeholder="Ex: Direito Previdenciário">
 
-      const resposta = await fetch(
-        "https://smartmille-backend.onrender.com/gerar-carrossel",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            area: area.value,
-            cidade: cidade.value,
-            publico: publico.value,
-            estilo: estilo.value,
-            nome: nome.value,
-            escritorio: escritorio.value
-          })
-        }
-      );
+  <label>Cidade / Estado</label>
+  <input id="cidade" placeholder="Ex: São Paulo - SP">
 
-      const dados = await resposta.json();
-      const slidesDiv = document.getElementById("slides");
+  <label>Público-alvo</label>
+  <input id="publico" placeholder="Ex: aposentados e trabalhadores CLT">
 
-      slidesDiv.innerHTML = "";
+  <label>Estilo de comunicação</label>
+  <input id="estilo" placeholder="Ex: didático, direto e profissional">
 
-      dados.slides.forEach((url, index) => {
-        const img = document.createElement("img");
-        img.src = url;
-        slidesDiv.appendChild(img);
+  <label>Nome do advogado (opcional)</label>
+  <input id="nome" placeholder="Ex: Dr. João Silva">
 
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = `smartmille-slide-${index + 1}.png`;
-        link.innerText = `Baixar slide ${index + 1}`;
-        document.getElementById("download").appendChild(link);
-      });
+  <label>Nome do escritório (opcional)</label>
+  <input id="escritorio" placeholder="Ex: Silva & Associados">
+
+  <button onclick="gerarCarrossel()">Gerar carrossel pronto</button>
+
+  <div id="status" class="status"></div>
+  <div id="slides" class="slides"></div>
+  <div id="download" class="download"></div>
+
+  <div class="footer">
+    SmartMille © Conteúdo jurídico com responsabilidade
+  </div>
+</div>
+
+<script>
+async function gerarCarrossel() {
+  status.innerText = "Gerando carrossel pronto para publicar...";
+  slides.innerHTML = "";
+  download.innerHTML = "";
+
+  const resposta = await fetch(
+    "https://smartmille-backend.onrender.com/gerar-carrossel",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        area: area.value,
+        cidade: cidade.value,
+        publico: publico.value,
+        estilo: estilo.value,
+        nome: nome.value,
+        escritorio: escritorio.value
+      })
     }
-  </script>
+  );
+
+  const dados = await resposta.json();
+  status.innerText = "Seu carrossel está pronto!";
+
+  dados.slides.forEach((url, i) => {
+    const img = document.createElement("img");
+    img.src = url;
+    slides.appendChild(img);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `smartmille-slide-${i + 1}.png`;
+    link.innerText = `Baixar slide ${i + 1}`;
+    download.appendChild(link);
+  });
+}
+</script>
 
 </body>
 </html>
