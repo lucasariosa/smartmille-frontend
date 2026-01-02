@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    /* RESET E BODY */
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
@@ -48,7 +47,6 @@
       to { transform: translate(-25%, -25%); }
     }
 
-    /* CONTAINER FIXO */
     .wrapper {
       position: relative;
       z-index: 1;
@@ -139,23 +137,16 @@
     .slides {
       margin-top: 28px;
       display: grid;
-      gap: 22px;
+      gap: 16px;
     }
 
-    .slides img {
-      width: 100%;
-      border-radius: 16px;
+    .slide-box {
+      padding: 16px;
       border: 1px solid #1e3a8a;
+      border-radius: 12px;
       background: #020617;
-    }
-
-    .download a {
-      display: block;
-      margin-top: 12px;
       font-size: 14px;
-      color: #93c5fd;
-      text-decoration: underline;
-      text-align: center;
+      line-height: 1.5;
     }
 
     .footer {
@@ -185,10 +176,10 @@
     <input id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
 
     <label>Público-alvo</label>
-    <input id="publico" placeholder="Ex: Trabalhadores Demitidos sem Justa Causa">
+    <input id="publico" placeholder="Ex: Trabalhadores demitidos sem justa causa">
 
     <label>Estilo de comunicação</label>
-    <input id="estilo" placeholder="Ex: Didático e Direto">
+    <input id="estilo" placeholder="Ex: Didático e direto">
 
     <label>Nome do advogado (opcional)</label>
     <input id="nome" placeholder="Ex: Dr(a). Seu Nome">
@@ -200,7 +191,6 @@
 
     <div id="status" class="status"></div>
     <div id="slides" class="slides"></div>
-    <div id="download" class="download"></div>
 
     <div class="footer">
       SmartMille © Conteúdo jurídico com responsabilidade
@@ -219,11 +209,9 @@ async function gerarCarrossel() {
 
   const status = document.getElementById("status");
   const slides = document.getElementById("slides");
-  const download = document.getElementById("download");
 
   status.innerText = "Gerando carrossel pronto para publicar...";
   slides.innerHTML = "";
-  download.innerHTML = "";
 
   try {
     const resposta = await fetch(
@@ -243,29 +231,24 @@ async function gerarCarrossel() {
     );
 
     if (!resposta.ok) {
-      const textoErro = await resposta.text();
-      throw new Error(textoErro);
+      const erroTexto = await resposta.text();
+      throw new Error(erroTexto);
     }
 
     const dados = await resposta.json();
 
-    status.innerText = "Seu carrossel está pronto!";
+    status.innerText = "Carrossel gerado com sucesso!";
 
-    dados.slides.forEach((url, i) => {
-      const img = document.createElement("img");
-      img.src = url;
-      slides.appendChild(img);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `smartmille-slide-${i + 1}.png`;
-      link.innerText = `Baixar slide ${i + 1}`;
-      download.appendChild(link);
+    dados.slides_texto.forEach((texto, i) => {
+      const box = document.createElement("div");
+      box.className = "slide-box";
+      box.innerText = `Slide ${i + 1}: ${texto}`;
+      slides.appendChild(box);
     });
 
   } catch (erro) {
-    status.innerText = "Erro: " + erro.message;
-    console.error("ERRO BACKEND:", erro);
+    status.innerText = "Erro ao gerar carrossel.";
+    console.error("ERRO:", erro);
   }
 }
 </script>
