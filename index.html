@@ -6,17 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-/* ===== RESET ===== */
 * { box-sizing: border-box; }
 
-/* ===== BACKGROUND ===== */
 body {
   margin: 0;
   min-height: 100vh;
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background:
-    radial-gradient(1200px 400px at 20% -10%, rgba(56,189,248,.15), transparent 40%),
-    radial-gradient(800px 300px at 80% 10%, rgba(250,204,21,.12), transparent 40%),
+    radial-gradient(1200px 500px at 50% -20%, rgba(255,255,255,.06), transparent 40%),
+    radial-gradient(800px 400px at 80% 10%, rgba(148,163,184,.12), transparent 45%),
     #0b1220;
   color: #e5e7eb;
   padding: 48px 16px;
@@ -25,57 +23,48 @@ body {
 /* ===== BRAND ===== */
 .brand {
   text-align: center;
-  font-size: 34px;
+  font-size: 36px;
   font-weight: 800;
-  letter-spacing: .5px;
-  margin-bottom: 28px;
-  color: #f8fafc;
+  margin-bottom: 36px;
+  letter-spacing: .4px;
 }
 
 .brand span {
-  background: linear-gradient(90deg, #38bdf8, #facc15);
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #e5e7eb 45%,
+    #9ca3af 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 /* ===== LAYOUT ===== */
-.wrapper {
-  max-width: 980px;
+.layout {
+  max-width: 1100px;
   margin: auto;
   display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 32px;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: center;
 }
 
 @media (max-width: 900px) {
-  .wrapper {
+  .layout {
     grid-template-columns: 1fr;
   }
 }
 
-/* ===== BRIEFING ===== */
-.briefing {
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
-  padding: 22px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #cbd5f5;
-  backdrop-filter: blur(6px);
-}
-
-/* ===== CARD ===== */
+/* ===== CARD PRINCIPAL ===== */
 .card {
-  background: linear-gradient(
-    180deg,
-    #1c2434,
-    #161d2b
-  );
-  border-radius: 20px;
-  padding: 28px;
+  width: 420px;
+  margin: auto;
+  background: linear-gradient(180deg, #1c2434, #141b2a);
+  border-radius: 22px;
+  padding: 30px;
   border: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  box-shadow: 0 25px 70px rgba(0,0,0,.55);
 }
 
 /* ===== FORM ===== */
@@ -84,7 +73,7 @@ input, select, button {
   padding: 14px;
   margin-bottom: 12px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.14);
   background: #0f172a;
   color: #e5e7eb;
   font-size: 14px;
@@ -95,16 +84,12 @@ input::placeholder {
 }
 
 button {
+  margin-top: 6px;
   background: linear-gradient(90deg, #38bdf8, #facc15);
   color: #020617;
   font-weight: 700;
   cursor: pointer;
   border: none;
-}
-
-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
 }
 
 /* ===== STATUS ===== */
@@ -118,8 +103,25 @@ button:disabled {
 .error {
   text-align: center;
   font-size: 13px;
-  margin-top: 8px;
+  margin-top: 6px;
   color: #f87171;
+}
+
+/* ===== DICAS ===== */
+.tips {
+  max-width: 320px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 22px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #cbd5f5;
+  backdrop-filter: blur(8px);
+}
+
+.tips strong {
+  color: #f8fafc;
 }
 
 /* ===== RESULT ===== */
@@ -129,6 +131,7 @@ button:disabled {
   gap: 32px;
 }
 
+/* ===== SLIDES ===== */
 .slide {
   position: relative;
   aspect-ratio: 4/5;
@@ -142,14 +145,13 @@ button:disabled {
   object-fit: cover;
 }
 
-/* ===== OVERLAY ===== */
 .overlay {
   position: absolute;
   inset: 0;
   padding: 34px;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.1),
+    rgba(0,0,0,.12),
     rgba(0,0,0,.88)
   );
   display: flex;
@@ -157,7 +159,6 @@ button:disabled {
   justify-content: center;
 }
 
-/* ===== LETTERING ===== */
 .headline {
   font-size: 30px;
   font-weight: 800;
@@ -174,56 +175,53 @@ button:disabled {
   line-height: 1.55;
   color: #e5e7eb;
 }
-
-/* CTA slide */
-.slide.cta .headline {
-  font-size: 26px;
-}
 </style>
 </head>
 
 <body>
 
 <div class="brand">
-  <span>Smart</span>Mille
+  <span>SmartMille</span>
 </div>
 
-<div class="wrapper">
+<div class="layout">
 
-  <!-- BRIEFING -->
-  <div class="briefing">
-    <strong>Dica para melhores resultados</strong><br><br>
-    Para um melhor aproveitamento da plataforma, use o campo
-    <em>“Tema do carrossel”</em> para nos auxiliar na criação.
-    Conte qual dor ou curiosidade você deseja despertar.<br><br>
-    <strong>Exemplo:</strong><br>
-    “Você já conhece todos os seus direitos trabalhistas?”<br><br>
-    Esse campo nos ajuda muito a te entregar o melhor carrossel possível.
-  </div>
+  <!-- CARD PRINCIPAL -->
+  <div>
+    <div class="card">
+      <input id="nome" placeholder="Seu nome">
+      <input id="contato" placeholder="WhatsApp">
+      <input id="area" placeholder="Área de atuação">
+      <input id="publico" placeholder="Público-alvo">
 
-  <!-- CARD -->
-  <div class="card">
+      <select id="tipo">
+        <option value="introducao">Introdução sobre o assunto</option>
+        <option value="definicao">Definição sobre o assunto</option>
+        <option value="conclusao">Conclusão sobre o assunto</option>
+      </select>
 
-    <input id="nome" placeholder="Seu nome">
-    <input id="contato" placeholder="WhatsApp">
-    <input id="area" placeholder="Área de atuação">
-    <input id="publico" placeholder="Público-alvo">
+      <input id="tema" placeholder="Tema do carrossel">
 
-    <select id="tipo">
-      <option value="introducao">Introdução sobre o assunto</option>
-      <option value="definicao">Definição sobre o assunto</option>
-      <option value="conclusao">Conclusão sobre o assunto</option>
-    </select>
+      <button id="btn" onclick="gerar()">Gerar carrossel</button>
 
-    <input id="tema" placeholder="Tema do carrossel">
-
-    <button id="btn" onclick="gerar()">Gerar carrossel</button>
-
-    <div id="status" class="status"></div>
-    <div id="erro" class="error"></div>
+      <div id="status" class="status"></div>
+      <div id="erro" class="error"></div>
+    </div>
 
     <div id="resultado" class="carousel"></div>
   </div>
+
+  <!-- DICAS -->
+  <div class="tips">
+    <strong>Dica para melhores resultados</strong><br><br>
+    Para um melhor aproveitamento da plataforma, use o campo
+    <em>“Tema do carrossel”</em> para nos auxiliar na criação.
+    Conte qual dor ou curiosidade deseja despertar.<br><br>
+    <strong>Exemplo:</strong><br>
+    “Você já conhece todos os seus direitos trabalhistas?”<br><br>
+    Esse campo nos ajuda muito a entregar um carrossel mais eficaz.
+  </div>
+
 </div>
 
 <script>
@@ -266,14 +264,13 @@ async function gerar() {
       return;
     }
 
-    status.innerText = "Carrossel gerado com sucesso.";
-
     const colors = ["blue", "yellow", "white"];
+    resultado.innerHTML = "";
 
     data.slides.forEach((s, idx) => {
       const color = colors[idx % colors.length];
       const div = document.createElement("div");
-      div.className = "slide" + (idx === 1 ? " cta" : "");
+      div.className = "slide";
       div.innerHTML = `
         <img src="data:image/png;base64,${s.imagem}">
         <div class="overlay">
@@ -284,7 +281,9 @@ async function gerar() {
       resultado.appendChild(div);
     });
 
-  } catch (e) {
+    status.innerText = "Carrossel gerado com sucesso.";
+
+  } catch {
     erro.innerText = "Erro ao gerar carrossel.";
   } finally {
     btn.disabled = false;
