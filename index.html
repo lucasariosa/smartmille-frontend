@@ -104,7 +104,27 @@ button {
   border: none;
 }
 
-/* ===== DICAS (RESTAURADAS) ===== */
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* ===== STATUS ===== */
+.status {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 10px;
+  color: #93c5fd;
+}
+
+.error {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 6px;
+  color: #f87171;
+}
+
+/* ===== DICAS ===== */
 .tips {
   max-width: 320px;
   background: rgba(255,255,255,.04);
@@ -206,13 +226,19 @@ button {
       <input id="contato" placeholder="WhatsApp">
       <input id="area" placeholder="Área de atuação">
       <input id="publico" placeholder="Público-alvo">
+
       <select id="tipo">
         <option value="introducao">Introdução</option>
         <option value="definicao">Definição</option>
         <option value="conclusao">Conclusão</option>
       </select>
+
       <input id="tema" placeholder="Tema do carrossel">
+
       <button id="btn" onclick="gerar()">Gerar carrossel</button>
+
+      <div id="status" class="status"></div>
+      <div id="erro" class="error"></div>
     </div>
 
     <div id="resultado" class="carousel"></div>
@@ -222,7 +248,7 @@ button {
     </div>
   </div>
 
-  <!-- DICA LATERAL -->
+  <!-- DICAS -->
   <div class="tips">
     <strong>Dica para melhores resultados</strong><br><br>
     Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
@@ -237,9 +263,22 @@ button {
 let slidesData = [];
 
 async function gerar() {
-  slidesData = [];
+  const btn = document.getElementById("btn");
+  const status = document.getElementById("status");
+  const erro = document.getElementById("erro");
+  const resultado = document.getElementById("resultado");
+  const download = document.getElementById("download");
+
+  erro.innerText = "";
+  status.innerText = "";
   resultado.innerHTML = "";
   download.style.display = "none";
+  slidesData = [];
+
+  btn.disabled = true;
+  btn.innerText = "Gerando...";
+  status.innerText =
+    "Gerando carrossel, isso pode levar até 1 minuto. Não feche ou atualize a página.";
 
   const payload = {
     nome: nome.value,
@@ -250,34 +289,49 @@ async function gerar() {
     tema: tema.value
   };
 
-  const res = await fetch(
-    "https://smartmille-backend.onrender.com/gerar-carrossel",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+  try {
+    const res = await fetch(
+      "https://smartmille-backend.onrender.com/gerar-carrossel",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.erro) {
+      erro.innerText = data.erro;
+      return;
     }
-  );
 
-  const data = await res.json();
-  const colors = ["blue","yellow","white"];
+    const colors = ["blue","yellow","white"];
 
-  data.slides.forEach((s,i)=>{
-    slidesData.push({...s, color: colors[i % colors.length]});
+    data.slides.forEach((s,i)=>{
+      slidesData.push({...s, color: colors[i % colors.length]});
 
-    const div = document.createElement("div");
-    div.className = "slide";
-    div.innerHTML = `
-      <img src="data:image/png;base64,${s.imagem}">
-      <div class="overlay">
-        <div class="headline ${colors[i % colors.length]}">${s.headline}</div>
-        <div class="text">${s.texto}</div>
-      </div>
-    `;
-    resultado.appendChild(div);
-  });
+      const div = document.createElement("div");
+      div.className = "slide";
+      div.innerHTML = `
+        <img src="data:image/png;base64,${s.imagem}">
+        <div class="overlay">
+          <div class="headline ${colors[i % colors.length]}">${s.headline}</div>
+          <div class="text">${s.texto}</div>
+        </div>
+      `;
+      resultado.appendChild(div);
+    });
 
-  download.style.display = "block";
+    status.innerText = "Carrossel gerado com sucesso.";
+    download.style.display = "block";
+
+  } catch (e) {
+    erro.innerText = "Erro ao gerar carrossel. Tente novamente.";
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Gerar carrossel";
+  }
 }
 
 function baixar() {
@@ -292,6 +346,7 @@ function baixar() {
 
     img.onload = () => {
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
       ctx.fillStyle = "rgba(0,0,0,.55)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
