@@ -219,7 +219,6 @@ button:disabled {
 
 <div class="layout">
 
-  <!-- BLOCO PRINCIPAL -->
   <div>
     <div class="card">
       <input id="nome" placeholder="Seu nome">
@@ -248,7 +247,6 @@ button:disabled {
     </div>
   </div>
 
-  <!-- DICAS -->
   <div class="tips">
     <strong>Dica para melhores resultados</strong><br><br>
     Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
@@ -334,6 +332,32 @@ async function gerar() {
   }
 }
 
+/* ===== FIX DOWNLOAD ===== */
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let lines = [];
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + " ";
+    const metrics = ctx.measureText(testLine);
+
+    if (metrics.width > maxWidth && n > 0) {
+      lines.push(line);
+      line = words[n] + " ";
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line);
+
+  lines.forEach((l, i) => {
+    ctx.fillText(l.trim(), x, y + i * lineHeight, maxWidth);
+  });
+
+  return lines.length * lineHeight;
+}
+
 function baixar() {
   slidesData.forEach((s, i) => {
     const canvas = document.createElement("canvas");
@@ -350,16 +374,34 @@ function baixar() {
       ctx.fillStyle = "rgba(0,0,0,.55)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.font = "800 64px Space Grotesk, Inter, sans-serif";
       ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+
+      ctx.font = "800 64px Space Grotesk, Inter, sans-serif";
       ctx.fillStyle =
         s.color === "blue" ? "#60a5fa" :
         s.color === "yellow" ? "#facc15" : "#ffffff";
-      ctx.fillText(s.headline, canvas.width/2, canvas.height/2 - 40, 900);
+
+      const headlineHeight = wrapText(
+        ctx,
+        s.headline,
+        canvas.width / 2,
+        canvas.height / 2 - 160,
+        880,
+        72
+      );
 
       ctx.font = "400 36px Inter, sans-serif";
       ctx.fillStyle = "#e5e7eb";
-      ctx.fillText(s.texto, canvas.width/2, canvas.height/2 + 40, 900);
+
+      wrapText(
+        ctx,
+        s.texto,
+        canvas.width / 2,
+        canvas.height / 2 - 160 + headlineHeight + 24,
+        820,
+        46
+      );
 
       const a = document.createElement("a");
       a.href = canvas.toDataURL("image/png");
