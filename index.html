@@ -1,59 +1,374 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <title>SmartMille</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      background: #f5f5f5;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-    }
-    .images {
-      margin-top: 20px;
-      display: flex;
-      gap: 20px;
-    }
-    img {
-      width: 300px;
-      border-radius: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>SmartMille</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 500px at 50% -20%, rgba(255,255,255,.08), transparent 40%),
+    radial-gradient(900px 400px at 80% 10%, rgba(96,165,250,.14), transparent 45%),
+    radial-gradient(700px 300px at 20% 80%, rgba(148,163,184,.10), transparent 50%),
+    #020617;
+  color: #e5e7eb;
+  padding: 56px 16px;
+}
+
+/* ===== BRANDING ===== */
+.branding {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(59,130,246,.12);
+  border: 1px solid rgba(59,130,246,.25);
+  margin-bottom: 14px;
+}
+
+.brand {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -.8px;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.brand span {
+  background: linear-gradient(to bottom,#ffffff,#e5e7eb,#9ca3af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subbrand {
+  font-size: 15px;
+  color: #9ca3af;
+}
+
+/* ===== LAYOUT ===== */
+.layout {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== CARD ===== */
+.card {
+  width: 420px;
+  margin: auto;
+  background: linear-gradient(180deg, #0f172a, #020617);
+  border-radius: 22px;
+  padding: 32px;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 30px 80px rgba(0,0,0,.65);
+}
+
+input, select, button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: #020617;
+  color: #e5e7eb;
+}
+
+button {
+  margin-top: 8px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  color: #020617;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* ===== STATUS ===== */
+.status {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 10px;
+  color: #93c5fd;
+}
+
+.error {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 6px;
+  color: #f87171;
+}
+
+/* ===== DICAS ===== */
+.tips {
+  max-width: 320px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 22px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #cbd5f5;
+  backdrop-filter: blur(10px);
+}
+
+.tips strong {
+  color: #f8fafc;
+}
+
+/* ===== RESULT ===== */
+.carousel {
+  margin-top: 40px;
+  display: grid;
+  gap: 32px;
+}
+
+.slide {
+  position: relative;
+  aspect-ratio: 4/5;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  padding: 34px;
+  background: linear-gradient(to bottom,rgba(0,0,0,.12),rgba(0,0,0,.9));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ===== HEADLINE ===== */
+.headline {
+  font-family: "Space Grotesk","Inter",system-ui;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.12;
+  margin-bottom: 18px;
+  text-align: center;
+  text-shadow:
+    0 2px 4px rgba(0,0,0,.65),
+    0 0 8px rgba(0,0,0,.45);
+}
+
+.headline.blue { color: #60a5fa; }
+.headline.yellow { color: #facc15; }
+.headline.white { color: #ffffff; }
+
+.text {
+  font-size: 16px;
+  line-height: 1.55;
+  color: #e5e7eb;
+  text-align: center;
+}
+
+/* ===== DOWNLOAD ===== */
+.download {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.download button {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.25);
+  color: #e5e7eb;
+}
+</style>
 </head>
+
 <body>
 
-  <h1>SmartMille</h1>
+<div class="branding">
+  <div class="badge">✨ Inteligência Artificial Jurídica</div>
+  <div class="brand"><span>SmartMille</span></div>
+  <div class="subbrand">Tecnologia para advogados</div>
+</div>
 
-  <input id="tema" placeholder="Digite o tema" />
-  <button onclick="gerar()">Gerar Carrossel</button>
+<div class="layout">
 
-  <div class="images" id="images"></div>
+  <!-- BLOCO PRINCIPAL -->
+  <div>
+    <div class="card">
+      <input id="nome" placeholder="Seu nome">
+      <input id="contato" placeholder="WhatsApp">
+      <input id="area" placeholder="Área de atuação">
+      <input id="publico" placeholder="Público-alvo">
 
-  <script>
-    async function gerar() {
-      const tema = document.getElementById("tema").value;
-      const container = document.getElementById("images");
-      container.innerHTML = "";
+      <select id="tipo">
+        <option value="introducao">Introdução</option>
+        <option value="definicao">Definição</option>
+        <option value="conclusao">Conclusão</option>
+      </select>
 
-      const res = await fetch("https://SEU_BACKEND.onrender.com/gerar-carrossel", {
+      <input id="tema" placeholder="Tema do carrossel">
+
+      <button id="btn" onclick="gerar()">Gerar carrossel</button>
+
+      <div id="status" class="status"></div>
+      <div id="erro" class="error"></div>
+    </div>
+
+    <div id="resultado" class="carousel"></div>
+
+    <div id="download" class="download" style="display:none">
+      <button onclick="baixar()">Baixar imagens</button>
+    </div>
+  </div>
+
+  <!-- DICAS -->
+  <div class="tips">
+    <strong>Dica para melhores resultados</strong><br><br>
+    Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
+    Conte qual dor ou curiosidade deseja despertar.<br><br>
+    <strong>Exemplo:</strong><br>
+    “Você já conhece todos os seus direitos trabalhistas?”
+  </div>
+
+</div>
+
+<script>
+let slidesData = [];
+
+async function gerar() {
+  const btn = document.getElementById("btn");
+  const status = document.getElementById("status");
+  const erro = document.getElementById("erro");
+  const resultado = document.getElementById("resultado");
+  const download = document.getElementById("download");
+
+  erro.innerText = "";
+  status.innerText = "";
+  resultado.innerHTML = "";
+  download.style.display = "none";
+  slidesData = [];
+
+  btn.disabled = true;
+  btn.innerText = "Gerando...";
+  status.innerText =
+    "Gerando carrossel, isso pode levar até 1 minuto. Não feche ou atualize a página.";
+
+  const payload = {
+    nome: nome.value,
+    contato: contato.value,
+    area: area.value,
+    publico: publico.value,
+    tipo: tipo.value,
+    tema: tema.value
+  };
+
+  try {
+    const res = await fetch(
+      "https://smartmille-backend.onrender.com/gerar-carrossel",
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tema })
-      });
+        body: JSON.stringify(payload)
+      }
+    );
 
-      const data = await res.json();
+    const data = await res.json();
 
-      data.images.forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        container.appendChild(img);
-      });
+    if (data.erro) {
+      erro.innerText = data.erro;
+      return;
     }
-  </script>
+
+    const colors = ["blue","yellow","white"];
+
+    data.slides.forEach((s,i)=>{
+      slidesData.push({...s, color: colors[i % colors.length]});
+
+      const div = document.createElement("div");
+      div.className = "slide";
+      div.innerHTML = `
+        <img src="data:image/png;base64,${s.imagem}">
+        <div class="overlay">
+          <div class="headline ${colors[i % colors.length]}">${s.headline}</div>
+          <div class="text">${s.texto}</div>
+        </div>
+      `;
+      resultado.appendChild(div);
+    });
+
+    status.innerText = "Carrossel gerado com sucesso.";
+    download.style.display = "block";
+
+  } catch (e) {
+    erro.innerText = "Erro ao gerar carrossel. Tente novamente.";
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Gerar carrossel";
+  }
+}
+
+function baixar() {
+  slidesData.forEach((s, i) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1024;
+    canvas.height = 1280;
+    const ctx = canvas.getContext("2d");
+
+    const img = new Image();
+    img.src = "data:image/png;base64," + s.imagem;
+
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "rgba(0,0,0,.55)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = "800 64px Space Grotesk, Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillStyle =
+        s.color === "blue" ? "#60a5fa" :
+        s.color === "yellow" ? "#facc15" : "#ffffff";
+      ctx.fillText(s.headline, canvas.width/2, canvas.height/2 - 40, 900);
+
+      ctx.font = "400 36px Inter, sans-serif";
+      ctx.fillStyle = "#e5e7eb";
+      ctx.fillText(s.texto, canvas.width/2, canvas.height/2 + 40, 900);
+
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = `smartmille-slide-${i+1}.png`;
+      a.click();
+    };
+  });
+}
+</script>
 
 </body>
 </html>
