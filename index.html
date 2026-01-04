@@ -252,7 +252,7 @@ button:disabled {
     Use o campo <em>“Tema do carrossel”</em> para orientar a criação.
     Conte qual dor ou curiosidade deseja despertar.<br><br>
     <strong>Exemplo:</strong><br>
-    “Você já conhece todos os seus direitos trabalhistas?”
+    “Você já sabe o que fazer depois do divórcio?”
   </div>
 
 </div>
@@ -357,8 +357,25 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 
   return lines.length * lineHeight;
 }
+// ===== CANVAS DESIGN HELPERS =====
+function highlightWords(text) {
+  const words = text.split(" ");
+  if (words.length < 4) return text;
 
+  const indexes = [];
+  while (indexes.length < 2) {
+    const i = Math.floor(Math.random() * words.length);
+    if (!indexes.includes(i)) indexes.push(i);
+  }
+
+  return words.map((w, i) =>
+    indexes.includes(i) ? w.toUpperCase() : w
+  ).join(" ");
+}
 function baixar() {
+  const headlineFonts = ["Anton", "Playfair Display", "Novecento"];
+  const palette = ["#60a5fa", "#facc15", "#ffffff", "#c7d2fe"];
+
   slidesData.forEach((s, i) => {
     const canvas = document.createElement("canvas");
     canvas.width = 1024;
@@ -369,40 +386,76 @@ function baixar() {
     img.src = "data:image/png;base64," + s.imagem;
 
     img.onload = () => {
+      // Fundo
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
+      // Overlay
       ctx.fillStyle = "rgba(0,0,0,.55)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // ===== HEADLINE =====
+      const font =
+        headlineFonts[Math.floor(Math.random() * headlineFonts.length)];
+      const color =
+        palette[Math.floor(Math.random() * palette.length)];
+
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
+      ctx.font = `800 72px ${font}, Inter, sans-serif`;
+      ctx.fillStyle = color;
 
-      ctx.font = "800 64px Space Grotesk, Inter, sans-serif";
-      ctx.fillStyle =
-        s.color === "blue" ? "#60a5fa" :
-        s.color === "yellow" ? "#facc15" : "#ffffff";
+      ctx.shadowColor = "rgba(0,0,0,.45)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 4;
+
+      const headlineText = highlightWords(s.headline);
 
       const headlineHeight = wrapText(
         ctx,
-        s.headline,
+        headlineText,
         canvas.width / 2,
-        canvas.height / 2 - 160,
+        canvas.height / 2 - 220,
         880,
-        72
+        78
       );
 
-      ctx.font = "400 36px Inter, sans-serif";
+      // Reset shadow
+      ctx.shadowBlur = 0;
+
+      // ===== TEXTO COM BOX TRANSLÚCIDO =====
+      const boxWidth = 820;
+      const boxX = (canvas.width - boxWidth) / 2;
+      const boxY = canvas.height / 2 - 220 + headlineHeight + 32;
+      const boxHeight = 170;
+
+      ctx.fillStyle = "rgba(0,0,0,.10)";
+      ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+
+      ctx.font = "400 36px Inter, Poppins, sans-serif";
       ctx.fillStyle = "#e5e7eb";
 
       wrapText(
         ctx,
         s.texto,
         canvas.width / 2,
-        canvas.height / 2 - 160 + headlineHeight + 24,
-        820,
+        boxY + 36,
+        760,
         46
       );
 
+      // ===== ASSINATURA (2ª IMAGEM) =====
+      if (i === 1) {
+        ctx.font = "500 26px Inter, sans-serif";
+        ctx.fillStyle = "rgba(255,255,255,.55)";
+        ctx.textAlign = "right";
+        ctx.fillText(
+          "SmartMille · Tecnologia Jurídica",
+          canvas.width - 40,
+          canvas.height - 40
+        );
+      }
+
+      // Download
       const a = document.createElement("a");
       a.href = canvas.toDataURL("image/png");
       a.download = `smartmille-slide-${i+1}.png`;
